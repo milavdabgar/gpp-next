@@ -1,26 +1,619 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+body {
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 0 0% 100%; /* White */
+    --foreground: 222.2 84% 4.9%; /* Dark Blue */
+
+    --card: 0 0% 100%; /* White */
+    --card-foreground: 222.2 84% 4.9%; /* Dark Blue */
+
+    --popover: 0 0% 100%; /* White */
+    --popover-foreground: 222.2 84% 4.9%; /* Dark Blue */
+
+    --primary: 222.4 71.2% 40.2%; /* Blue (#1E40AF) */
+    --primary-foreground: 0 0% 98%; /* Almost White */
+
+    --secondary: 217.2 91.2% 59.8%; /* Light Blue (#3B82F6) */
+    --secondary-foreground: 0 0% 98%; /* Almost White */
+
+    --muted: 210 40% 96.1%; /* Light Grayish Blue */
+    --muted-foreground: 215.4 16.3% 46.9%; /* Muted Blue */
+
+    --accent: 176 57.9% 50%; /* Teal (#2DD4CF) */
+    --accent-foreground: 222.2 47.4% 11.2%; /* Dark Blue for contrast on Teal */
+
+    --destructive: 0 84.2% 60.2%; /* Red (#EF4444) */
+    --destructive-foreground: 0 0% 98%; /* Almost White */
+
+    --success: 153.6 77.8% 41.4%; /* Green (#10B981) */
+    --success-foreground: 0 0% 98%; /* Almost White */
+
+    --warning: 38.3 95.5% 51.2%; /* Yellow (#F59E0B) */
+    --warning-foreground: 222.2 47.4% 11.2%; /* Dark Blue for contrast on Yellow */
+
+    --border: 214.3 31.8% 91.4%; /* Light Grayish Blue Border */
+    --input: 214.3 31.8% 91.4%; /* Light Grayish Blue Input */
+    --ring: 222.4 71.2% 40.2%; /* Blue Ring */
+
+    --radius: 0.5rem;
+
+    --chart-1: 222.4 71.2% 40.2%; /* Blue */
+    --chart-2: 217.2 91.2% 59.8%; /* Light Blue */
+    --chart-3: 176 57.9% 50%; /* Teal */
+    --chart-4: 38.3 95.5% 51.2%; /* Yellow */
+    --chart-5: 153.6 77.8% 41.4%; /* Green */
+
+    --sidebar-background: 222.2 84% 4.9%; /* Dark Blue */
+    --sidebar-foreground: 0 0% 98%; /* Almost White */
+    --sidebar-primary: 217.2 91.2% 59.8%; /* Light Blue */
+    --sidebar-primary-foreground: 0 0% 98%; /* Almost White */
+    --sidebar-accent: 222.4 71.2% 40.2%; /* Blue */
+    --sidebar-accent-foreground: 0 0% 98%; /* Almost White */
+    --sidebar-border: 222.4 71.2% 30.2%; /* Darker Blue Border */
+    --sidebar-ring: 217.2 91.2% 59.8%; /* Light Blue Ring */
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%; /* Dark Blue */
+    --foreground: 0 0% 98%; /* Almost White */
+
+    --card: 222.2 80% 8.9%; /* Darker Blue */
+    --card-foreground: 0 0% 98%; /* Almost White */
+
+    --popover: 222.2 80% 8.9%; /* Darker Blue */
+    --popover-foreground: 0 0% 98%; /* Almost White */
+
+    --primary: 217.2 91.2% 59.8%; /* Light Blue (#3B82F6) */
+    --primary-foreground: 222.2 47.4% 11.2%; /* Dark Blue for contrast */
+
+    --secondary: 222.4 71.2% 40.2%; /* Blue (#1E40AF) */
+    --secondary-foreground: 0 0% 98%; /* Almost White */
+
+    --muted: 222.2 80% 15.9%; /* Muted Dark Blue */
+    --muted-foreground: 210 40% 96.1%; /* Light Grayish Blue */
+
+    --accent: 176 57.9% 50%; /* Teal (#2DD4CF) */
+    --accent-foreground: 222.2 47.4% 11.2%; /* Dark Blue for contrast on Teal */
+
+    --destructive: 0 72.2% 50.6%; /* Red */
+    --destructive-foreground: 0 0% 98%; /* Almost White */
+    
+    --success: 153.6 70% 45%; /* Green */
+    --success-foreground: 0 0% 98%; /* Almost White */
+
+    --warning: 38.3 90% 55%; /* Yellow */
+    --warning-foreground: 222.2 47.4% 11.2%; /* Dark Blue for contrast on Yellow */
+
+    --border: 222.2 80% 15.9%; /* Muted Dark Blue Border */
+    --input: 222.2 80% 15.9%; /* Muted Dark Blue Input */
+    --ring: 217.2 91.2% 59.8%; /* Light Blue Ring */
+
+    --chart-1: 217.2 91.2% 59.8%; /* Light Blue */
+    --chart-2: 222.4 71.2% 40.2%; /* Blue */
+    --chart-3: 176 57.9% 50%; /* Teal */
+    --chart-4: 38.3 90% 55%; /* Yellow */
+    --chart-5: 153.6 70% 45%; /* Green */
+
+    --sidebar-background: 222.2 80% 8.9%; /* Darker Blue */
+    --sidebar-foreground: 0 0% 98%; /* Almost White */
+    --sidebar-primary: 217.2 91.2% 59.8%; /* Light Blue */
+    --sidebar-primary-foreground: 222.2 47.4% 11.2%; /* Dark Blue */
+    --sidebar-accent: 222.4 71.2% 40.2%; /* Blue */
+    --sidebar-accent-foreground: 0 0% 98%; /* Almost White */
+    --sidebar-border: 222.4 71.2% 20.2%; /* Even Darker Blue Border */
+    --sidebar-ring: 217.2 91.2% 59.8%; /* Light Blue Ring */
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Enhanced Markdown Content Styles */
+.markdown-content {
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.markdown-content h1 {
+  @apply text-4xl font-bold mt-0 mb-6 text-foreground border-b border-border pb-4;
+}
+
+.markdown-content h2 {
+  @apply text-3xl font-bold mt-8 mb-4 text-foreground border-b border-border pb-3;
+}
+
+.markdown-content h3 {
+  @apply text-2xl font-bold mt-6 mb-3 text-foreground;
+}
+
+.markdown-content h4 {
+  @apply text-xl font-semibold mt-5 mb-3 text-foreground;
+}
+
+.markdown-content h5 {
+  @apply text-lg font-semibold mt-4 mb-2 text-foreground;
+}
+
+.markdown-content h6 {
+  @apply text-base font-semibold mt-4 mb-2 text-muted-foreground;
+}
+
+.markdown-content p {
+  @apply mb-4 text-foreground leading-relaxed;
+}
+
+.markdown-content blockquote {
+  @apply border-l-4 border-primary bg-muted/50 p-4 my-6 rounded-r-lg italic;
+}
+
+.markdown-content blockquote p {
+  @apply mb-0 last:mb-0;
+}
+
+.markdown-content ul {
+  @apply list-disc pl-6 mb-4 space-y-2;
+}
+
+.markdown-content ol {
+  @apply list-decimal pl-6 mb-4 space-y-2;
+}
+
+.markdown-content li {
+  @apply text-foreground leading-relaxed;
+}
+
+.markdown-content li p {
+  @apply mb-2;
+}
+
+.markdown-content a {
+  @apply text-primary hover:text-primary/80 underline underline-offset-2 transition-colors;
+}
+
+.markdown-content strong {
+  @apply font-bold text-foreground;
+}
+
+.markdown-content em {
+  @apply italic;
+}
+
+.markdown-content hr {
+  @apply border-border my-8;
+}
+
+.markdown-content img {
+  @apply rounded-lg shadow-md mx-auto my-6 max-w-full h-auto;
+}
+
+.image-caption {
+  @apply text-sm text-muted-foreground text-center mt-2 italic;
+}
+
+/* Enhanced Code Block Styles */
+.enhanced-code-block {
+  @apply my-6 rounded-lg border border-border overflow-hidden bg-muted/20;
+}
+
+.code-block-header {
+  @apply flex justify-between items-center px-4 py-2 bg-muted text-sm border-b border-border;
+}
+
+.code-language {
+  @apply font-mono text-muted-foreground uppercase text-xs font-medium;
+}
+
+.copy-button {
+  @apply px-3 py-1 text-xs bg-primary text-primary-foreground rounded hover:bg-primary/90 transition-colors cursor-pointer border-0;
+}
+
+/* Special styling for goat ASCII diagrams */
+.goat-diagram {
+  @apply font-mono text-sm leading-tight bg-muted/30 p-4 rounded border border-border;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+.goat-diagram code {
+  @apply bg-transparent p-0 text-foreground;
+  font-family: inherit;
+}
+
+/* Plain text styling */
+.plain-text {
+  @apply font-mono text-sm leading-relaxed bg-muted/20 p-4 rounded border border-border;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+
+.plain-text code {
+  @apply bg-transparent p-0 text-foreground;
+  font-family: inherit;
+}
+
+.enhanced-pre {
+  @apply bg-muted/30 p-4 overflow-x-auto text-sm;
+}
+
+.enhanced-pre code {
+  @apply font-mono text-foreground bg-transparent p-0;
+}
+
+/* Regular code (inline) */
+.markdown-content :not(pre) > code {
+  @apply bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-foreground border;
+}
+
+/* Shiki syntax highlighting - dual theme support */
+pre.shiki {
+  @apply rounded-lg border border-border overflow-x-auto;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'SF Mono', Consolas, 'Liberation Mono', 'Courier New', monospace !important;
+  padding: 1rem !important;
+  margin: 0 !important;
+  font-size: 0.875rem !important;
+  line-height: 1.5 !important;
+}
+
+pre.shiki code {
+  font-family: inherit !important;
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  font-size: inherit !important;
+  line-height: inherit !important;
+}
+
+/* Shiki dual theme support */
+.dark .shiki,
+.dark .shiki span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+}
+
+.shiki,
+.shiki span {
+  color: var(--shiki-light) !important;
+  background-color: var(--shiki-light-bg) !important;
+}
+
+/* Ensure proper background colors */
+.dark pre.shiki {
+  background-color: var(--shiki-dark-bg) !important;
+}
+
+pre.shiki {
+  background-color: var(--shiki-light-bg) !important;
+}
+
+/* Fallback styling if Shiki doesn't load properly */
+.code-fallback {
+  @apply font-mono text-sm bg-muted/30 p-4 rounded border border-border;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+.code-fallback code {
+  @apply bg-transparent p-0 text-foreground;
+  font-family: inherit;
+}
+
+/* Table Styles */
+.table-wrapper {
+  @apply overflow-x-auto my-6 rounded-lg border border-border;
+}
+
+.markdown-content table {
+  @apply w-full border-collapse bg-card;
+}
+
+.markdown-content table th {
+  @apply bg-muted text-left p-3 font-semibold border-b border-border text-foreground;
+}
+
+.markdown-content table td {
+  @apply p-3 border-b border-border text-foreground;
+}
+
+.markdown-content table tr:hover {
+  @apply bg-muted/30;
+}
+
+.markdown-content table tr:last-child td {
+  @apply border-b-0;
+}
+
+/* Enhanced spacing for readability */
+.markdown-content > * + * {
+  margin-top: 1.25rem;
+}
+
+.markdown-content > h1 + *,
+.markdown-content > h2 + *,
+.markdown-content > h3 + *,
+.markdown-content > h4 + *,
+.markdown-content > h5 + *,
+.markdown-content > h6 + * {
+  margin-top: 0.75rem;
+}
+
+/* Special styling for first paragraph after headings */
+.markdown-content h1 + p,
+.markdown-content h2 + p,
+.markdown-content h3 + p {
+  @apply text-lg text-muted-foreground mt-2;
+}
+
+/* Mermaid diagram styling */
+.markdown-content .mermaid {
+  @apply flex justify-center my-8;
+}
+
+/* Dark mode Mermaid improvements */
+.dark .markdown-content .mermaid {
+  /* Ensure proper background for diagram container */
+  background-color: transparent !important;
+}
+
+.dark .markdown-content .mermaid svg {
+  /* Force high contrast text in dark mode */
+  color: rgb(241 245 249) !important; /* slate-100 */
+  background-color: transparent !important;
+}
+
+/* Force visibility of text elements in dark mode */
+.dark .markdown-content .mermaid text {
+  fill: rgb(241 245 249) !important; /* slate-100 */
+  color: rgb(241 245 249) !important; /* slate-100 */
+}
+
+/* Ensure diagram borders are visible in dark mode */
+.dark .markdown-content .mermaid rect,
+.dark .markdown-content .mermaid path,
+.dark .markdown-content .mermaid line {
+  stroke: rgb(100 116 139) !important; /* slate-500 */
+}
+
+/* Fix node backgrounds in dark mode */
+.dark .markdown-content .mermaid .node rect,
+.dark .markdown-content .mermaid .node circle,
+.dark .markdown-content .mermaid .node ellipse,
+.dark .markdown-content .mermaid .node polygon {
+  fill: rgb(55 65 81) !important; /* gray-700 */
+  stroke: rgb(107 114 128) !important; /* gray-500 */
+}
+
+/* Improve edge label readability */
+.dark .markdown-content .mermaid .edgeLabel {
+  background-color: rgb(30 41 59) !important; /* slate-800 */
+  color: rgb(241 245 249) !important; /* slate-100 */
+}
+
+/* Print styles */
+@media print {
+  .markdown-content {
+    @apply text-black;
+  }
+  
+  .copy-button {
+    @apply hidden;
+  }
+  
+  .markdown-content a {
+    @apply text-black no-underline;
+  }
+  
+  .markdown-content a:after {
+    content: " (" attr(href) ")";
+    @apply text-xs;
+  }
+}
+
+/* Global Dark Mode Enhancements */
+@layer base {
+  /* Ensure all elements respect dark mode by default */
+  .dark {
+    color-scheme: dark;
+  }
+  
+  /* Default text colors in dark mode */
+  .dark p:not([class*="text-"]) {
+    @apply text-gray-300;
+  }
+  
+  .dark h1:not([class*="text-"]),
+  .dark h2:not([class*="text-"]),
+  .dark h3:not([class*="text-"]),
+  .dark h4:not([class*="text-"]),
+  .dark h5:not([class*="text-"]),
+  .dark h6:not([class*="text-"]) {
+    @apply text-white;
+  }
+  
+  /* Ensure all links have proper dark mode colors */
+  .dark a:not([class*="text-"]):not([class*="btn"]):not([class*="button"]) {
+    @apply text-blue-400 hover:text-blue-300;
+  }
+  
+  /* Better scrollbar for dark mode */
+  .dark::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .dark::-webkit-scrollbar-track {
+    @apply bg-gray-800;
+  }
+  
+  .dark::-webkit-scrollbar-thumb {
+    @apply bg-gray-600 rounded;
+  }
+  
+  .dark::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-500;
+  }
+  
+  /* Dark mode for form elements */
+  .dark input:not([class*="bg-"]),
+  .dark textarea:not([class*="bg-"]),
+  .dark select:not([class*="bg-"]) {
+    @apply bg-gray-800 border-gray-600 text-white;
+  }
+  
+  .dark input:focus:not([class*="bg-"]),
+  .dark textarea:focus:not([class*="bg-"]),
+  .dark select:focus:not([class*="bg-"]) {
+    @apply border-blue-500 ring-blue-500;
+  }
+}
+
+@layer components {
+  /* Enhanced card styling for dark mode */
+  .dark .card:not([class*="bg-"]) {
+    @apply bg-gray-800 border-gray-700;
+  }
+  
+  /* Enhanced button styling for dark mode */
+  .dark .btn-primary {
+    @apply bg-blue-600 hover:bg-blue-700 text-white;
+  }
+  
+  .dark .btn-secondary {
+    @apply bg-gray-700 hover:bg-gray-600 text-white;
+  }
+  
+  /* Enhanced badge styling for dark mode */
+  .dark .badge:not([class*="bg-"]) {
+    @apply bg-gray-700 text-gray-200;
+  }
+}
+
+/* Inline SVG styling for text selectability */
+.inline-svg-container {
+  @apply rounded-lg shadow-md mx-auto my-6 max-w-full;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.inline-svg-container .inline-svg {
+  @apply max-w-full h-auto;
+  display: block;
+}
+
+.inline-svg-container .inline-svg text {
+  /* Ensure SVG text is selectable and properly styled */
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  cursor: text;
+}
+
+.inline-svg-container figcaption {
+  @apply text-sm text-muted-foreground text-center mt-2 italic;
+}
+
+/* Dark mode support for inline SVGs */
+.dark .inline-svg-container .inline-svg {
+  filter: brightness(0.9) contrast(1.1);
+}
+
+/* Utilities for dark mode consistency */
+@layer utilities {
+  .dark-mode-text {
+    @apply text-gray-900 dark:text-white;
+  }
+  
+  .dark-mode-text-muted {
+    @apply text-gray-600 dark:text-gray-400;
+  }
+  
+  .dark-mode-bg {
+    @apply bg-white dark:bg-gray-900;
+  }
+  
+  .dark-mode-bg-muted {
+    @apply bg-gray-50 dark:bg-gray-800;
+  }
+  
+  .dark-mode-border {
+    @apply border-gray-200 dark:border-gray-700;
+  }
+}
+
+/* Animation improvements for dark mode */
+@layer utilities {
+  .dark-mode-transition {
+    @apply transition-colors duration-200 ease-in-out;
+  }
+  
+  /* Mobile-specific utilities */
+  .touch-friendly {
+    @apply min-h-[44px] min-w-[44px];
+  }
+  
+  .mobile-scroll {
+    @apply overflow-x-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600;
+  }
+  
+  .mobile-padding {
+    @apply px-3 sm:px-4 md:px-6;
+  }
+  
+  .mobile-text {
+    @apply text-sm sm:text-base;
+  }
+  
+  .mobile-heading {
+    @apply text-lg sm:text-xl md:text-2xl;
+  }
+  
+  /* Safe area support for mobile devices */
+  .safe-area-inset-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  .safe-area-inset-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  .safe-area-inset-left {
+    padding-left: env(safe-area-inset-left);
+  }
+  
+  .safe-area-inset-right {
+    padding-right: env(safe-area-inset-right);
+  }
+}
+
+/* Announcement ticker marquee animation */
+@keyframes marquee-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee-scroll 40s linear infinite;
+  display: flex;
+  width: max-content;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
 }
