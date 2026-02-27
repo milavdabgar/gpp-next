@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -10,16 +9,13 @@ import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { 
-  FileText, File, Globe, Award, Users, BookOpen, TrendingUp, Building, Mail, MapPin, Calendar, Star, Trophy} from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+  Award, Users, BookOpen, TrendingUp, Building, Mail, MapPin, Calendar, Star, Trophy} from 'lucide-react';
 import { newsletterData, getNewsletterDataByYear, availableYears, getBandNumber, type NewsletterData } from '@/lib/newsletter-data';
 
 export default function InteractiveNewsletterPage() {
   const [selectedYear, setSelectedYear] = useState('2023-24');
   const [currentData, setCurrentData] = useState<NewsletterData>(newsletterData);
-  const [isExporting, setIsExporting] = useState<string | null>(null);
-  const [imageQuality, setImageQuality] = useState<'standard' | 'high'>('standard');
-  const { toast } = useToast();
+
 
   // Update data when year changes
   useEffect(() => {
@@ -40,94 +36,6 @@ export default function InteractiveNewsletterPage() {
 
   // Spotlight content for achievements and accomplishments
   const spotlightItems = currentData.spotlight || [];
-
-  const handleExport = async (format: string) => {
-    setIsExporting(format);
-
-    try {
-      // Create a comprehensive data object for export
-      const exportData = {
-        title: `Spectrum Newsletter - ${getBandNumber(selectedYear)}`,
-        edition: getBandNumber(selectedYear),
-        academicYear: selectedYear,
-        department: 'Electronics & Communication Engineering',
-        institute: 'Government Polytechnic, Palanpur',
-        format: format,
-        year: selectedYear,
-        quality: imageQuality
-      };
-
-      const response = await fetch('/api/newsletters/export-interactive', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(exportData),
-      });
-
-      if (!response.ok) {
-        // Try to get error details from the response
-        let errorMessage = `Export failed: ${response.statusText}`;
-        let suggestion = '';
-
-        try {
-          const errorData = await response.json();
-          if (errorData.error) {
-            errorMessage = errorData.error;
-          }
-          if (errorData.suggestion) {
-            suggestion = errorData.suggestion;
-          }
-        } catch (jsonError) {
-          // Fallback if response is not JSON
-          console.error('Could not parse error response:', jsonError);
-        }
-
-        throw new Error(errorMessage + (suggestion ? ` ${suggestion}` : ''));
-      }
-
-      // Get the filename from the response headers
-      const contentDisposition = response.headers.get('Content-Disposition');
-      const filename = contentDisposition
-        ? contentDisposition.split('filename=')[1]?.replace(/"/g, '')
-        : `spectrum-interactive-newsletter.${format}`;
-
-      // Create blob and download
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.style.display = 'none';
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-
-      toast({
-        title: "Export Successful",
-        description: `Newsletter exported as ${format.toUpperCase()} format.`,
-      });
-
-    } catch (error) {
-      console.error('Export error:', error);
-
-      // Show helpful error message based on format
-      let errorDescription = error instanceof Error ? error.message : 'Unknown error occurred';
-
-      if (format === 'pdf' && errorDescription.includes('PDF generation failed')) {
-        errorDescription += ' Try HTML export as an alternative.';
-      }
-
-      toast({
-        title: "Export Failed",
-        description: errorDescription,
-        variant: "destructive",
-      });
-    } finally {
-      setIsExporting(null);
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
@@ -190,7 +98,7 @@ export default function InteractiveNewsletterPage() {
       {/* Controls Section */}
       <div className="bg-gradient-to-r from-blue-900 via-purple-900 to-indigo-900 py-8">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center justify-center">
             {/* Year Selection */}
             <div className="bg-white/10 backdrop-blur-md rounded-lg p-4 dark:bg-gray-900">
               <label className="text-white text-sm font-medium mb-2 block">Select Academic Year</label>
@@ -206,58 +114,6 @@ export default function InteractiveNewsletterPage() {
                   ))}
                 </SelectContent>
               </Select>
-            </div>
-
-            {/* Image Quality Selection */}
-            <div className="bg-white/10 backdrop-blur-md rounded-lg p-4 dark:bg-gray-900">
-              <label className="text-white text-sm font-medium mb-2 block">Image Quality</label>
-              <Select value={imageQuality} onValueChange={(value: 'standard' | 'high') => setImageQuality(value)}>
-                <SelectTrigger className="w-64 bg-white/90 text-gray-900 dark:bg-gray-900 dark:text-white">
-                  <SelectValue placeholder="Select image quality" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="standard">
-                    <div className="flex flex-col">
-                      <span>Standard Quality</span>
-                      <span className="text-xs text-gray-500 dark:text-gray-400">Smaller file size, faster download</span>
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="high">
-                    <div className="flex flex-col">
-                      <span>High Quality</span>
-                      <span className="text-xs text-gray-500 dark:text-gray-400">Original quality, larger file size</span>
-                    </div>
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Export Buttons */}
-            <div className="flex flex-wrap justify-center gap-4">
-              <Button 
-                onClick={() => handleExport('pdf')} 
-                className="bg-red-600 hover:bg-red-700"
-                disabled={isExporting === 'pdf'}
-              >
-                <FileText className="w-4 h-4 mr-2" />
-                {isExporting === 'pdf' ? 'Exporting...' : `Export PDF (${imageQuality === 'high' ? 'HQ' : 'Standard'})`}
-              </Button>
-              <Button 
-                onClick={() => handleExport('docx')} 
-                className="bg-blue-600 hover:bg-blue-700"
-                disabled={isExporting === 'docx'}
-              >
-                <File className="w-4 h-4 mr-2" />
-                {isExporting === 'docx' ? 'Exporting...' : `Export DOCX (${imageQuality === 'high' ? 'HQ' : 'Standard'})`}
-              </Button>
-              <Button 
-                onClick={() => handleExport('html')} 
-                className="bg-green-600 hover:bg-green-700"
-                disabled={isExporting === 'html'}
-              >
-                <Globe className="w-4 h-4 mr-2" />
-                {isExporting === 'html' ? 'Exporting...' : `Export HTML (${imageQuality === 'high' ? 'HQ' : 'Standard'})`}
-              </Button>
             </div>
           </div>
         </div>
