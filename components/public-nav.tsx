@@ -101,7 +101,7 @@ export function PublicNav() {
                 {/* Dropdown Menu */}
                 {item.dropdown && (
                   <div 
-                    className={`absolute top-full left-0 mt-1 w-64 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg transition-all duration-200 ${
+                    className={`absolute top-full left-0 mt-1 w-64 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg transition-all duration-200 z-50 ${
                       activeDropdown === item.label ? 'opacity-100 visible' : 'opacity-0 invisible'
                     }`}
                     onMouseEnter={() => setActiveDropdown(item.label)}
