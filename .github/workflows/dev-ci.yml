@@ -27,6 +27,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: TypeScript Type Check
+        run: npx tsc --noEmit
+
       - name: ESLint Check
         run: npm run lint
 
@@ -49,16 +52,17 @@ jobs:
             exit 1
           fi
 
-      - name: Test production start
+      - name: Test standalone server start
         run: |
-          timeout 30 npm start &
+          # next.config.ts uses output:'standalone' so use node server.js, not npm start
+          node .next/standalone/server.js &
           PID=$!
-          sleep 10
+          sleep 8
           if curl -f http://localhost:3000 > /dev/null 2>&1; then
-            echo "✅ Production server started successfully"
+            echo "✅ Standalone server started successfully"
             kill $PID 2>/dev/null || true
           else
-            echo "❌ Production server failed to start"
+            echo "❌ Standalone server failed to start"
             kill $PID 2>/dev/null || true
             exit 1
           fi

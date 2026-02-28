@@ -73,7 +73,8 @@ jobs:
           REMOTE_HOST: milav@server.gppalanpur.ac.in
           FORCE_REBUILD: ${{ github.event.inputs.force_rebuild || 'false' }}
         run: |
-          ssh $REMOTE_HOST << 'EOF'
+          # Pass FORCE_REBUILD into the remote shell explicitly (single-quoted heredoc prevents local expansion)
+          ssh $REMOTE_HOST "FORCE_REBUILD=$FORCE_REBUILD bash -s" << 'EOF'
             # Ensure gpp-next directory exists and is a git repo
             if [ ! -d ~/gpp-next/.git ]; then
               echo "🚀 Initial clone of gpp-next repository..."
@@ -86,7 +87,7 @@ jobs:
             echo "=== 🚀 Production Deployment Started ==="
             echo "Timestamp: $(date)"
             echo "Branch: main"
-            echo "Force rebuild: $FORCE_REBUILD"
+            echo "Force rebuild: ${FORCE_REBUILD}"
             echo "=============================================="
             
             # Clean shutdown of existing services
@@ -101,7 +102,7 @@ jobs:
             git clean -fd
             
             # Clean Docker system if force rebuild requested
-            if [ "$FORCE_REBUILD" = "true" ]; then
+            if [ "${FORCE_REBUILD}" = "true" ]; then
               echo "🧹 Force rebuild requested - cleaning Docker cache..."
               docker system prune -af --volumes
               docker builder prune -af
@@ -118,11 +119,13 @@ jobs:
             # Use production docker-compose with proper tagging
             docker compose -f docker-compose.production.yml build --no-cache --pull gpp-next 2>&1 | while IFS= read -r line; do
               echo "$(date "+%H:%M:%S") - $line"
-            done || {
+            done
+            BUILD_EXIT=${PIPESTATUS[0]}
+            if [ "$BUILD_EXIT" -ne 0 ]; then
               echo "❌ Docker build failed, checking logs..."
               docker compose -f docker-compose.production.yml logs gpp-next
               exit 1
-            }
+            fi
             
             # Start services
             echo "🚀 Starting production services..."
@@ -159,6 +162,6 @@ jobs:
             echo "✅ 🎉 PRODUCTION DEPLOYMENT SUCCESSFUL 🎉 ✅"
             echo "Timestamp: $(date)"
             echo "Service: GPP-Next Static Site"
-            echo "Docker cache: $([ "$FORCE_REBUILD" = "true" ] && echo "Cleared" || echo "Used")"
+            echo "Docker cache: $([ "${FORCE_REBUILD}" = "true" ] && echo "Cleared" || echo "Used")"
             echo "=============================================="
           EOF
