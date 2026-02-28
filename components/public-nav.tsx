@@ -42,6 +42,7 @@ export function PublicNav() {
         { label: "Student Section", href: "/student-section", description: "Student Services & Support" },
         { label: "SSIP Cell", href: "/ssip", description: "Innovation & Entrepreneurship" },
         { label: "TPO Cell", href: "/tpo", description: "Training & Placements" },
+        { label: "Newsletters", href: "/newsletters", description: "Department Publications" },
       ]
     },
     { 
